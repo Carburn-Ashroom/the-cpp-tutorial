@@ -1,0 +1,29 @@
+#include <iostream>
+#include <algorithm>
+
+using std::cout;
+using std::cin;
+using std::cerr;
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    int big, small;
+    for ( ; ; ) {
+        cout << "请输入两个整数：";
+        cin >> big >> small;
+        if (big>0 and small>0)
+            break;
+        cerr << "两个整数都必须为正数\n";
+    }
+    if (small > big)
+        std::swap(small, big);
+    while (small != 0) {
+        int remainder {big%small};
+        big = small;
+        small = remainder;
+    }
+    cout << "最小公因数为：" << big;
+    return 0;
+}
+

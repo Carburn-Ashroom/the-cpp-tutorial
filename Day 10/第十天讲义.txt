@@ -1,0 +1,82 @@
+今天了解一下我们的老熟人——std::string
+
+string类型和我们见过几次面了，它定义于C++头文件<string>中（不是<string.h>）
+string表示一个以'\0'结尾的，真正的字符串。
+
+string address;     // string类型有默认初始化，初始化为空串
+string qq {"2257763704"};       // 可以用char*初始化string
+string qq_num {qq};     // 当然可以用另一个string初始化string
+qq[2] = '4';        // 将qq字符串的第3个字符（不是第2个！）改为4。不会影响qq_num
+
+字符串可以用=号进行赋值，用+号进行连接
+address = qq_num+'@'+"qq.com";      // address的值为"2257762704@qq.com"
+
+连加的性能较差，我们最好只对短字符串使用连加
+
+字符串可以用==判等
+if (address == qq_num)      // 注意是两个等于号，不是一个
+    cerr << "缺少域名";     // cerr是标准错误输出流
+else if (address == "2257763704@qq.com")        // string和char*也可以用==判等，但必须string在左，char*在右
+    cout << "邮箱正确";
+
+string类型不允许switch，因为只有整数类型才能switch。所以下列代码是错误的
+switch (address) {
+case "2257763704@qq.com":
+    cout << "邮箱正确";
+    break; 
+default:
+    cerr << "邮箱错误";
+    break;
+}
+
+string类型还有很多方法，以.方法名(参数)的形式调用。
+if (address.empty())        // 等价于 if (address.length() == 0)
+    cerr << "邮箱不得为空";
+char first {address.front()};      // .front()方法取得首字符
+char last {address.back()};     // .back()方法取得尾字符
+const char* str {address.c_str()};      // .c_str()方法取得字符串的const char*形式，在很多接受const char*参数的C式函数中有用
+...
+更多方法请见 https://zh.cppreference.com/w/cpp/string/basic_string
+
+字符串的+和+=的原理是完全不一样的。
+
+比如sumstr = str1+str2
+其原理是，先开辟一段新的内存空间，然后将str1拷贝进去，然后将str2拷贝在后面，之后让sumstr接管这段内存的地址。
+
+【string add operator】
+
+而str1 += str2，其原理只是将str2拷贝在str1的尾部而已，非必要（只在str1的预留空间不足时）不开辟新的内存。
+
+由于每次开辟内存都意味着要将原数据拷贝进去，所以为了性能考虑，开辟内存的次数越少越好。
+
+于<sstream>中有两个很强大的字符串输入输出流类型：std::ostringstream和std::istringstream;
+
+ostringstream这个名字看起来长，其实特别好记。
+o是指数据在外面，要往里面进。相应的，i是指数据在里面，要往外面出。
+string是字符串，stream是流。
+
+ostringstream的用法和cout简直一模一样：
+ostringstream address;      // ostringstream的参数最好用默认初始化，不要给字符串作为初始值不然会有意想不到的bug
+address << 2257763704 << '@' << "qq.com";       // address是一个存储着"2257763704@qq.com"的流
+
+ostringstream可以使用.str()方法获得其string字符串：
+cout << address.str();      // cout不能输出ostringstream，只能输出string。所以使用.str()方法取出address流中的字符串
+
+ostringstream一般用于在构造长字符串时避免连加。它不会在非必要的时候开辟新的内存空间（只在预留空间不足时开辟）。
+
+istringstream的用法与cin类似，与ostringstream正相反：
+istringstream input {"3.14 5 字符串"};      // 也可以使用string类型的初始化参数。或者说，本来就该用string，只是const char*可以转化为string而已
+double pi;
+int num; 
+string str;
+input >> pi >> num >> str;      // 就像cin一样
+
+作业：
+
+1.下面代码最少开辟多少次内存？
+（1）sumstr = str1 + str2 + str3 + str4;        // 所有变量为string类型
+（2）sumstr << str1 << str2 << str3 << str4;        // sumstr为ostringstream类型
+
+2.从实现原理的角度解释下面两行代码的区别，并估计谁更快：
+（1）sumstr += str1;
+（2）sumstr = sumstr+str1;

@@ -1,0 +1,37 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using std::vector;
+using std::cout;
+using std::cin;
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    vector<double> nums;
+    int count {10};
+    cout << "请输入" << count << "个数字：";
+    while (count-- != 0) {
+        double input;
+        cin >> input;
+        nums.push_back(input);
+    }
+    std::sort(nums.begin(), nums.end());
+    cout << "再输入一个数字：";
+    double input;
+    cin >> input;
+    // 将该数字插入到合适的位置，使元素保持有序
+    if (nums.back() < input)
+        nums.push_back(input);
+    else
+        for (auto i=nums.begin(); i!=nums.end(); ++i)
+            if (*i >= input) {
+                nums.insert(i, input);
+                break;
+            }
+    // 倒序输出容器元素
+    for (auto i=nums.rbegin(); i!=nums.rend(); ++i)
+        cout << *i << ' ';
+    return 0;
+}
