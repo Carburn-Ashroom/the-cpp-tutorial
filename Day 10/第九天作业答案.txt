@@ -1,0 +1,23 @@
+#include <iostream>
+#include <cctype>
+
+using std::cout;
+using std::cin;
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    cout << "输入：";
+    char ch;
+    cin.get(ch);
+    if (isalpha(ch))
+        cout << "是字母";
+    else if (isdigit(ch))
+        cout << "是数字";
+    else if (isspace(ch))
+        cout << "是空白符";
+    else
+        cout << "是其他字符";
+    return 0;
+}
+

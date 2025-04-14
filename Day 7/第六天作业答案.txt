@@ -1,0 +1,17 @@
+#include <iostream>
+
+int main(int argc, char** argv)
+{
+    int ji = 2.5;
+    int niu, yang;      // [警告] unused variable 'yang' [-Wunused-variable]。这是yang变量白白定义没有使用的意思
+    int ma {7};
+    ma + 7;     // [警告] statement has no effect [-Wunused-value]。这是因为+操作符并不改变两侧的操作数的值，也就是说ma的值不会变化，这句代码的正确写法应当是 ma += 7;
+    if (ma = 14) {      // [警告] suggest parentheses around assignment used as truth value [-Wparentheses]。这句的意思是if中应当使用两个等于号==而不是=
+        ji = niu;       // [警告] 'niu' is used uninitialized [-Wuninitialized]。这句的意思是niu未初始化就被读取，在C++中局部变量未初始化是垃圾值，是不应当被读取的
+        printf("%lf", ji);      // [警告] format '%lf' expects argument of type 'double', but argument 2 has type 'int' [-Wformat=]。这句话的意思是printf中参数对应的类型错误。
+    }
+	return 0;
+}
+
+2.
+int ji = 2.5;     // 这一行不合理，ji作为整数型的变量，被赋予一个小数值会丢失数据，发生“窄化转换”。正确写法是 double ji {2.5};

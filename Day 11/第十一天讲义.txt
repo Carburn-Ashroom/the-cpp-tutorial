@@ -1,0 +1,91 @@
+今天介绍一下C++的数组 - std::vector
+
+定义于<vector>的std::vector为C++默认数组。像其他语言一样，vector是可变长度。唯一的不同点是vector更快而已。
+这种库定义的数组被C++称为“容器”
+
+std::string也是一种容器，因为它姑且也算是库定义的一种数组。
+在标准C++中，我们优先选择vector等容器代替传统数组，使用string代替char*作为默认的字符串类型。
+
+vector<int> array { 1, 2 };     // 一个拥有两个值的int类型数组
+array.push_back(3);     // array的值变为 { 1, 2, 3 }
+array.pop_back();       // array的值变回 { 1, 2 }
+if (not array.empty())      // not是取反的意思，等价于!运算符。所以这行代码等价于 if (array.size() != 0)
+    cout << array[1];       // 输出2
+
+由上面代码可知，vector后面有尖括号括住的子元素类型，vector本身和尖括号共同组成一个类型。
+也就是说，vector<int>才是一个完整的类型，vector不是
+尽管我们依旧可以 using std::vector;
+
+如果不需要有初始值，可以省略初始化器
+vector array;       // array是一个空数组，虽然没有初始化但是行为良好
+空数组可以在后续通过.push_back()等函数加入值。
+
+注意vector并没有.length()方法，但是字符串却有.size()方法。字符串的.size()方法等价于.length()方法
+
+关于vector的更多方法，请参见
+https://zh.cppreference.com/w/cpp/container/vector
+
+尖括号也可以括住其他类型，表示其他类型的数组。无论是内置类型还是用户自定义类型都可以：
+vector<double> decimals { 1, 2, 3 };        // decimals为 { 1.0, 2.0, 3.0 }
+vector<string> hello_world { "Hello", "world" };        // hello_world是两个string而不是两个const char*
+
+vector是少数可以规范使用圆括号初始化的类型，因为其圆括号初始化和花括号的语义有较大差别：
+vector<int> array(3);           // array是 { 0, 0, 0 }
+vector<int> array(3, 1);        // array是 { 1, 1, 1 }
+vector<int> array {3};          // array是 { 3 }
+vector<int> array { 3, 1 };     // array是 { 3, 1 }
+
+从上述代码可以看出，圆括号初始化使用一个整数和一个可选的初始值作为参数，其语义为加入若干个初始值的数量。而花括号初始化的语义为提供初始值本身。
+由于语义不相同，所以两者无法互相替代。
+
+注意vector并没有+运算符，不能像字符串一样用+号连接。但是有=和[]运算符。 
+=号的语义为拷贝赋值（不是初始化），[]的语义和.at()方法类似，为访问数组的某个元素。注意无论是使用[]还是使用at()方法访问元素，都绝对禁止越界访问。
+越界访问数组可能会使程序直接崩溃。不止是C++，无论在任何语言中这句话都有效
+
+我们可以使用auto接受访问到的数组元素，而不用管它的类型：
+auto elem = array[1];       // elem的类型被自动推断为array的元素类型
+
+将auto用于变量的定义，会自动推导变量的类型。请看示例：
+auto three = 3;     // three为int类型的变量
+auto angle = sin(3.14);     // angle为double类型
+auto tm = time(nullptr);        // tm为time_t类型
+auto str = "Hello world";       // str为const char*类型（糟糕！如果希望string的话不要用）
+
+那么我们在什么时候使用auto，在什么时候使用普通的类型呢？
+
+经过大量的实践，我们发现：
+
+1.变量的类型经常变动的时候
+比如某容器的元素类型。一个容器原本是整数的数组，后来发现整数无法满足需求，遂改为小数或长整数的都有。
+我们使用auto接受访问到的数组元素，就不需要在改变容器元素类型时改动接受代码：
+auto elem = array[1];       // 推荐。就算array的类型变动，也不需要改动这行代码
+int elem {array[1]};        // 不推荐。需要跟随array的类型变动，手动改变elem的类型
+
+2.某些函数的返回值类型冷门，或者又臭又长，或者易错。我们可以省略其类型，提高我们的编程体验：
+auto tm = time(nullptr);        // 冷门的且易错的类型：time_t（一般等价于long long类型）
+auto sz = array.size();         // 易错的类型：size_t（一般是unsigned long long类型）
+auto iter = array.begin();      // 又臭又长且难以理解的类型：vector<int>::iterator
+
+注意不要对auto使用花括号初始化。在C++23之前花括号初始化auto是未定义行为。即使现在也有歧义：
+auto num {3};       // 数组？
+
+【auto and =】
+
+实践发现，随着标准的更替，书里说的已经不尽然全对。现在auto num {3}的类型已经可以“正确”地推断为整数。
+不过书中说的至少证明auto花括号的写法存在歧义，应当避免。
+请使用等于号初始化对待auto
+
+作业：
+
+1.下列说法正确的是：
+A.一般情况下，优先使用等于号初始化
+B.对于auto，优先使用花括号初始化
+C.对vector不应当使用落后的圆括号初始化
+D.具体问题具体分析是马克思主义活的灵魂
+
+2.分别用一句代码回答下列问题：
+（1）定义一个小数型数组，内有初始值为100个3.14
+（2）定义一个整数型数组，内有初始值 { 2, 1, 3 }
+（3）将整数数组的最后一个值加入到小数数组的末尾。你并不知道整数数组有多少个值，而且禁止使用size()方法。
+（4）删除整数数组的最后一个值。你并不知道整数数组有多少个值
+注：查阅cppreference寻找你需要的函数

@@ -1,0 +1,43 @@
+1.总体代码的意思是把array中所有的整数改成0
+for中的初始化语句是auto i=array.begin()，这个i被初始化为指向第一个元素的迭代器
+循环条件为i!=array.end()，意思是当i指向最后一个元素之后的元素时停止循环，也就是当i出界时停止循环，也就是访问所有元素
+迭代语句是++i，i不断指向下一个元素
+循环体为*i = 0，意思是将i指向的元素改为0
+
+2.选C
+A.前置++和后置++对迭代器的性能是不同的，前置++更快一些。A项错误
+B.不是所有迭代器都可以使用<号，比如list的迭代器。B项错误
+C.i使用了自增运算符，而且i在这条语句中出现了两次。使用自增运算符的变量不能在语句中出现第二次，所以选择C项
+D.引用常用于函数参数和范围for，不经常用于其他用途。D项错误
+
+3.
+#include <iostream>
+#include <vector>
+#include <cmath>
+
+using std::vector;
+using std::cout;
+using std::cin;
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    int count {5};
+    cout << "请输入" << count << "个小数：";
+    vector<double> nums;
+    for (int i{}; i!=count; ++i) {
+        double in;
+        cin >> in;
+        nums.push_back(in);
+    }
+    double aver {};
+    for (auto n : nums)
+        aver += n;
+    aver /= count;
+    double variance {};
+    for (auto i=nums.begin(); i!=nums.end(); ++i)
+        variance += pow(aver-*i, 2);
+    variance /= count;
+    cout << "方差为：" << variance;
+    return 0;
+}

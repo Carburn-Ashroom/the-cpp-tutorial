@@ -1,0 +1,99 @@
+今天我们了解一下函数重载（zhong zai 四声）
+
+1.简介
+
+有时我们希望一个函数能接受处理不同类型的参数。比如下面这几个函数声明：
+void print(int num);        // 打印一个整数
+void print(const string& str);      // 打印一个字符串
+void print(double num, int precision);      // 用precision精度打印一个小数
+
+在C语言中，函数是不允许重名的。但是C++允许重名函数，只要它们的参数类型不相同。这样的规则叫“重载”（zhong zai 四声）
+当几个函数在功能上一致，仅仅是处理的类型有区别时，我们就可以考虑使用重载。
+
+重载函数被调用时，是允许类型转换的。例如：
+print(3);           // 精确匹配：调用了void print(int num);
+print(3, 3);        // 调用了void print(double num, int precision); 注意第一个参数发生了类型转换，否则找不到匹配的重载函数
+
+2.二义性
+
+如果
+1.参数在类型转换前无匹配
+2.参数在类型转换后有多个匹配
+则可能会引发二义性错误
+
+【overload ambiguity】
+
+因此，我们设计重载函数时，最好优先考虑精确匹配。精确匹配的优先级高于类型转换的匹配，有精确匹配时不会引发二义性错误
+
+3.auto返回值
+
+将auto放在一个函数的返回值部分，可以自动推导这个函数的返回值类型：
+
+auto num() { return 1; }        // 该函数返回int类型
+
+auto只是类型推导，它不允许函数返回多种类型：
+
+auto neg(int num)
+{
+    if (num < 0)
+        return true;        // 决定：该函数返回bool类型
+    else 
+        return string{"false"};     // 错误：该函数应当返回bool类型，不能返回字符串
+}
+
+（以上，不要把我的 string{"false"} 简化为 "false" ，否则程序不会报错。原因以后再讲）
+
+4.<cmath>
+
+<cmath>是C语言标准数学库<math.h>的C++版本。和其他的C源库一样，<cmath>在std命名空间中纳入了所有<math.h>中的函数，但同时在全局名字空间中保留了原来的函数
+acos(-1);       // 全局名字空间中的acos函数，存在于<cmath>、<math.h>
+std::acos(-1);  // std名字空间中的acos函数，仅存在于<cmath>
+
+和其他C源库不同的是，<cmath>中拥有很多函数重载。在<math.h>中，sin、cos等函数只能接受double类型参数。但是在<cmath>中提供了接受float等其他类型参数的重载函数。这些函数都放在std命名空间中，全局命名空间是访问不到的
+
+尽管如此，我仍然建议优先使用double类型。原因参见第九天讲义
+
+<cmath>中拥有很多实用的函数。他们都接受double类型参数，并返回double类型结果。
+
+以下是一小部分非常常用的函数，请务必掌握：
+double fabs(double) —— 计算一个数的绝对值
+double fdim(double x, double y) —— 返回x与y的正差：若x>y，则返回x-y；否则返回0。这个函数在角色受到伤害计算血量时常用
+double pow(double x, double y) —— 非常常用！计算x的y次方
+double sqrt(double x) —— 计算根号下x，等价于pow(x, 0.5)，但性能更快
+double hypot(double x, double y, double z =0) —— 计算空间坐标(0, 0, 0)与(x, y, z)的距离，也就是x、y、z的平方和的算术平方根。可以省略z，计算(0, 0)到(x, y)的距离
+sin、cos、tan —— 不用说
+double acos(double) —— 常用acos(-1)表示圆周率
+double round(double) —— 四舍五入到整数，尽管返回值是小数，当整数用就好
+
+更多标准数学函数请参见
+常用数学函数：https://zh.cppreference.com/w/cpp/numeric/math
+数学特殊函数：https://zh.cppreference.com/w/cpp/numeric/special_functions
+
+作业：
+
+1.定义两个函数，名字都叫quote，返回string类型。该函数为它的参数字符串添加引号。
+要求：
+第一个quote接受const string& str类型的参数
+第二个quote接受string&& str类型的参数
+
+第一个quote的功能：
+生成一个新字符串。这个字符串等价于：
+如果str内既不包含双引号，也不包含反斜杠，就在str前后添加双引号
+否则，
+    在str前添加 R"(
+    在str后添加 )"
+最后，返回新字符串
+
+第二个quote的功能：
+在str前后添加单引号。如果str内有反斜杠，就在str最前方再添加一个小写r。然后返回str
+
+最后，测试这两个重载函数能否正常工作。
+
+2.下面的代码输出什么？
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    for (int i{1}; i!=10; ++i)
+        cout << static_cast<long long>((pow(10, i)-1))/9*i << '\n';
+    return 0;
+}

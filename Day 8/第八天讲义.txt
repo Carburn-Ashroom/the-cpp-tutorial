@@ -1,0 +1,76 @@
+今天我们继续学习C++的输出，然后学习输入
+
+1.加血
+通过昨天的视频，我们发现好像有一种方式可以加快cout的输出速度：
+cout.sync_with_stdio(false);
+
+这句话的意思是，不再保证cout和printf的同步。
+也就是说，C++原本保证cout和printf可以共存，同时使用。但是这样的保证会影响到cout的性能
+sync是同步，stdio指C语言的输入输出流，false是否定。所以这句话的意思便是取消cout和printf的同步
+之后就不能再用printf了，除非用时再写回cout.sync_with_stdio(true)
+
+有时你会在别的地方看到 ios::sync_with_stdio(false); 的写法，前面cout.换成了ios::
+两句话是同样的意思。我觉得写成cout.的格式其可读性可理解性更高一些
+
+由于我并不使用printf的缘故，我的所有C++控制台程序中都会出现cout.sync_with_stdio(false);
+以后就不给这一行写注释了，大家要明白是什么意思
+
+2.操纵符
+
+cout << hex << 255;     // 输出ff
+像std::hex这样的对象被称为操纵符。输出操纵符会对cout产生一些变化，而不一定真的会输出什么。
+比如std::hex操纵符，会使cout变为输出十六进制的状态，之后cout输出的数字就会变成十六进制的。
+用using std::hex;可以将其从std命名空间中拿出。std中的其他名字也都一样，以后不再强调
+
+有些操纵符是需要参数的，比如：
+cout << std::setbase(16) << 255;        // 也输出ff
+std::setbase操纵符可以灵活控制cout的进制状态。定义于<iomanip>中，在这个<iomanip>头文件里定义的操纵符都是需要参数的，其他头文件里的操纵符则不需要参数。
+
+有些操纵符需要配合起来使用，比如fixed和setprecision
+cout << std::fixed << std::setprecision(3) << 3.1415;        // 输出3.142
+
+std::setprecision的本意是控制有效数字的位数，fixed将其改成了控制小数点后位数的意思。
+如果不加fixed，会输出3.14，因为3也在有效数字之列
+
+我们在cppreference中可以查看所有的操纵符：
+https://zh.cppreference.com/w/cpp/io/manip
+
+2.输入
+
+C++的输入使用std::cin：
+int integer;        // integer是整数型变量
+double decimal;     // decimal是（双精度）小数型变量
+string str;     // std::string类型定义于<string>库中，表示C++的字符串
+cin >> integer >> decimal >> str;       // 可以的输入格式： -1 3.14 张浩洋
+
+输入之间以任意数量的任意空白符作为间隔
+所谓空白符，就是空格、换行和tab
+在上面的例子里，输入多个连续的任意空白符，也等价于一个空格。
+
+cin的符号是>>而不是<<，这一点与cout不同。它表示数据在cin的里面，要流向变量，所以箭头是指向变量的，也就是指向流的外侧。
+以后我们还会碰到其他带有in或out的流，请一定记住：
+in表示数据在流的里面，要向外出
+out表示数据在流的外面，要往里进
+千万别弄反了！
+
+注意：空格可以截断一切类型的数据，包括字符串类型
+也就是说，cin >> str的方式不能读入含有任何空白符的字符串。
+比如输入Bjarne Stroustrup，它只会读入Bjarne，将Stroustrup留作下一次读入
+
+为了解决这个问题，我们引入std::getline这个函数
+这个函数定义于<string>中，作用是读入一行输入到一个std::string类型的字符串中
+用法为：
+std::getline(cin, str);
+str为string类型，前面不允许加取地址符&。cin也可以替换为其他的输入流，我们之后会讲到
+
+作业：
+
+1.默写 cout.sync_with_stdio(false); 这一行代码，将它加入到你的实验室项目中
+
+2.完成以下程序：
+
+【task】
+
+注意：
+1.体重的输出要求保留两位小数
+2.名字是一行字符串，其中会有若干空格

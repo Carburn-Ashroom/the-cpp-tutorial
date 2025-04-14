@@ -1,0 +1,3 @@
+第二天作业答案：
+按钮槽函数中写以下代码：
+ui->label->setText("<span style='color:red'>张</span><span style='color:blue'>浩洋</span>");

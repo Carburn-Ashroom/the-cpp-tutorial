@@ -1,0 +1,36 @@
+#include <iostream>
+#include <cstdint>
+#include <ctime>
+
+using std::cout;
+
+uint32_t random(uint32_t min, uint32_t max);             // 1.定义一个函数，名字为random。返回值为uint32_t类型，两个参数分别叫min和max，都是uint32_t类型
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    // 5.用这个函数生成100个数字。你能从这些数字中找到明显的规律吗？
+    for (int i{}; i!=100; ++i)
+        cout << random(1, 100) << ' ';
+    /*
+     * 你不能找到这些数字的规律。
+     * 人眼很难找到和位运算有关的规律
+     * 所以位运算常被用于（除线性同余外）的各种随机数算法
+     * 而线性同余算法生成的随机数质量常常被诟病，认为概率不均匀，随机性低，等等
+     * 可悲的是，C语言标准库中的rand()函数往往是使用线性同余算法实现的
+     * 本作业中我们实现的random函数是xorshift算法，其实现难度比线性同余低，而随机数质量和运行速度都比线性同余更快
+     * C++标准库中还提供 std::mt19937_64 随机数引擎，其使用更加强大的梅森旋转算法，我们将来很快就会学到
+     */
+    return 0;
+}
+
+uint32_t random(uint32_t min, uint32_t max)
+{
+    static uint32_t seed {static_cast<uint32_t>(time(nullptr))};             // 2.在函数中定义一个uint32_t类型的静态变量，名字为seed，用time(nullptr)的返回值初始化它（注意类型转换）
+    // 3.函数要完成三个功能：
+    seed ^= seed<<13;          // <<运算符不会修改操作数，只会得到临时结果
+    seed ^= seed>>17;
+    seed ^= seed<<5;
+    return seed%(max-min)+min;       // 6.seed%(max-min)是 [0,max-min) 范围内的随机数，后面加上min就是 [min,max) 范围内的随机数
+}
+

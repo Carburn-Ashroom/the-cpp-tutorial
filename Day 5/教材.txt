@@ -1,0 +1,21 @@
+配套教材：
+阿里云盘：https://www.alipan.com/s/rQuhFxa4xUE
+Bjarne Stroustrup所作的《C++程序设计语言》。该书被分为两本出版。第一本为第1-3部分，讲语言语法。第二本为第4部分，讲标准库
+
+cppreference：
+https://zh.cppreference.com/
+辅助教材。紧跟C++最新标准，而且查询网页还是比查书的形式方便一些。不过对内容的讲解不如教材
+
+HTML：
+https://www.runoob.com/html/html-tutorial.html
+目前见过比较好的HTML网站，想学习HTML可以在这里自学
+
+Qt：
+F1
+在Qt Creator中，按下F1就可以轻松打开Qt帮助文档，一定要多多使用
+
+其他资料：
+阿里云盘：https://www.alipan.com/s/F1qEveJXGFn
+其他负有盛名的C++资料。包括Stroustrup的其他3本著作、C++20标准英语原文、《C++ primer》中文版
+
+如果资源挂了请在群里回复

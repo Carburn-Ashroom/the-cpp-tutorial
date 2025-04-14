@@ -1,0 +1,24 @@
+#include <iostream>
+#include <string>
+#include <iomanip>
+
+using std::cout;
+using std::string;
+using std::cin;
+using std::fixed;
+
+int main(int argc, char** argv)
+{
+    cout.sync_with_stdio(false);
+    cout << "输入：\n";
+    string name;
+    int height;
+    double weight;
+    std::getline(cin, name);
+    cin >> height >> weight;
+    cout << "输出：\n";
+    cout << "姓名：" << name << "，身高：" << height << "cm，体重：";
+    cout << fixed << std::setprecision(2) << weight << "kg";
+    return 0;
+}
+
