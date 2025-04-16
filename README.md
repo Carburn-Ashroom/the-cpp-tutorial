@@ -1,27 +1,24 @@
 # C++入门教程
 
 #### 介绍
-C++入门教程
+Qt/C++交流群：972330913
+该教程本来是我在QQ群里通过发言的形式发布的，现收录之前发言并开源
+每两次发言之间通过空行分隔。若某次发言中自带空行（比如发布代码），则前后用两个空行分隔
 
 #### 使用说明
+有些文件较大，放在阿里云盘中。如果链接挂了请在群内回复
+如果对Qt不感兴趣，可跳过前四天，直接从第五天开始学习
+如果某一天的内容较多，可以分好几天去学习。有余力就学，学累了就停
+之所以称为“天”而不是“章”或“次”，是历史原因。最开始的几次确实是一天发布一次的，后来才发现有的章节好几天才能发布一次
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 仓库地址：
+[gitee](https://gitee.com/carburn-ashroom/the-cpp-tutorial.git)
+[github](https://github.com/Carburn-Ashroom/the-cpp-tutorial.git)
+github仓库是**gitee的镜像仓库**，不主动更新。其唯一的更新方式为gitee的push方向镜像
 
 #### 参与贡献
-
+（仅更新gitee仓库，**谢绝github**的PR）
 1.  Fork 本仓库
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
