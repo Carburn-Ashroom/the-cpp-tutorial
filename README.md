@@ -12,9 +12,9 @@ Qt/C++交流群：972330913
 <br/>之所以称为“天”而不是“章”或“次”，是历史原因。最开始的几次确实是一天发布一次的，后来才发现有的章节好几天才能发布一次
 
 #### 仓库地址：
-[gitee](https://gitee.com/carburn-ashroom/the-cpp-tutorial.git)
-<br/>[github](https://github.com/Carburn-Ashroom/the-cpp-tutorial.git)
-<br/>github仓库是**gitee的镜像仓库**，不主动更新。其唯一的更新方式为gitee的push方向镜像
+[gitee仓库](https://gitee.com/carburn-ashroom/the-cpp-tutorial.git)
+<br/>[github仓库](https://github.com/Carburn-Ashroom/the-cpp-tutorial.git)
+<br/>github仓库是gitee的镜像仓库，**不主动更新**。其唯一的更新方式为gitee的push方向镜像
 
 #### 参与贡献
 （仅更新gitee仓库，**谢绝github**的PR）
